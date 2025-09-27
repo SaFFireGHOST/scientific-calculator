@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    DOCKER_REPO = "yourdockerhubuser/sci-calculator"
+    DOCKER_REPO = "saffireghost/sci-calculator"
   }
   stages {
     stage('Checkout') {
@@ -10,7 +10,7 @@ pipeline {
     stage('Test') {
       steps {
         sh 'python3 -m venv venv || true'
-        sh '. venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt && pytest -q'
+        sh '. venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt && PYTHONPATH=. pytest -q'
       }
     }
     stage('Build Docker') {

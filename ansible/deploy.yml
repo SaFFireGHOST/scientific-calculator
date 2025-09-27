@@ -23,7 +23,7 @@
         name: "{{ container_name }}"
         state: absent
         force_kill: yes
-        remove_volumes: yes
+        keep_volumes: no 
 
     - name: Run the calculator container
       community.docker.docker_container:

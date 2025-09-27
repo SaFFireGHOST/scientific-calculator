@@ -1,0 +1,34 @@
+- hosts: managed
+  become: yes
+  vars:
+    container_name: sci_calculator
+  tasks:
+    - name: Ensure python3-pip present (for docker SDK)
+      apt:
+        name: python3-pip
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Install docker python package
+      pip:
+        name: docker
+
+    - name: Pull the image from registry
+      community.docker.docker_image:
+        name: "{{ image }}"
+        source: pull
+
+    - name: Stop and remove old container if exists
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+        force_kill: yes
+        remove_volumes: yes
+
+    - name: Run the calculator container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image }}"
+        state: started
+        restart_policy: unless-stopped
+        command: "python main.py --op sqrt --x 16"

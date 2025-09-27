@@ -41,7 +41,7 @@ Additionally, the project demonstrates a **full DevOps pipeline** including:
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/YOURUSERNAME/sci-calculator.git
+git clone https://github.com/SaFFireGHOST/sci-calculator.git
 cd sci-calculator
 ````
 

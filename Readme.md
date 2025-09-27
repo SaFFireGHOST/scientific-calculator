@@ -1,6 +1,3 @@
-
----
-
 ````markdown
 # Scientific Calculator with DevOps
 

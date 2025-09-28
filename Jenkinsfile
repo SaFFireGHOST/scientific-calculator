@@ -42,14 +42,18 @@ pipeline {
       emailext(
         subject: "Jenkins Build Success: ✅ ${env.JOB_NAME} #${env.BUILD_NUMBER}",
         body: "Good news!\nThe build for job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) was successful.\n\nCheck console output: ${env.BUILD_URL}",
-        to: "mupparapukoushik@gmail.com"
+        to: "mupparapukoushik@gmail.com",
+        from: "mupparapukoushik@gmail.com",
+        smtpCredentialId: "jenkins-gmail-cred"
       )
     }
     failure {
       emailext(
         subject: "Jenkins Build Failed: ❌ ${env.JOB_NAME} #${env.BUILD_NUMBER}",
         body: "The build for job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has FAILED.\n\nCheck logs: ${env.BUILD_URL}",
-        to: "mupparapukoushik@gmail.com"
+        to: "mupparapukoushik@gmail.com",
+        from: "mupparapukoushik@gmail.com",
+        smtpCredentialId: "jenkins-gmail-cred"
       )
     }
   }

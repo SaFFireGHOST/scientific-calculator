@@ -8,7 +8,7 @@ def test_sqrt():
         sqrt(-1)
 
 def test_factorial():
-    assert factorial(6) == 72
+    assert factorial(6) == 720
     with pytest.raises(ValueError):
         factorial(-1)
 

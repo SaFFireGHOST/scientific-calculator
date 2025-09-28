@@ -44,7 +44,7 @@ pipeline {
         body: "Good news!\nThe build for job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) was successful.\n\nCheck console output: ${env.BUILD_URL}",
         to: "mupparapukoushik@gmail.com",
         from: "mupparapukoushik@gmail.com",
-        smtpCredentialId: "jenkins-gmail-cred"
+        credentialsId: "jenkins-gmail-cred"
       )
     }
     failure {
@@ -53,7 +53,7 @@ pipeline {
         body: "The build for job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has FAILED.\n\nCheck logs: ${env.BUILD_URL}",
         to: "mupparapukoushik@gmail.com",
         from: "mupparapukoushik@gmail.com",
-        smtpCredentialId: "jenkins-gmail-cred"
+        credentialsId: "jenkins-gmail-cred"
       )
     }
   }

@@ -1,33 +1,35 @@
-- hosts: managed
-  become: yes
-  vars:
-    container_name: sci_calculator
+- hosts: localhost
+  connection: local
   tasks:
-    - name: Ensure python3-pip present (for docker SDK)
-      apt:
-        name: python3-pip
-        state: present
-      when: ansible_os_family == "Debian"
-
-    - name: Install docker python package
-      pip:
-        name: docker
-
-    - name: Pull the image from registry
-      community.docker.docker_image:
-        name: "{{ image }}"
+    - name: Pull the latest calculator image from Docker Hub
+      docker_image:
+        name: saffireghost/sci_calculator:latest
         source: pull
 
-    - name: Stop and remove old container if exists
-      community.docker.docker_container:
-        name: "{{ container_name }}"
+    - name: Stop and remove the old calculator container if it exists
+      docker_container:
+        name: scientific-calculator
         state: absent
-        force_kill: yes
-        keep_volumes: no 
 
-    - name: Run the calculator container
-      community.docker.docker_container:
-        name: "{{ container_name }}"
-        image: "{{ image }}"
+    - name: Run the new calculator container in detached mode
+      docker_container:
+        name: scientific-calculator
+        image: saffireghost/sci_calculator:latest
         state: started
         detach: yes
+        
+    - name: Verify calculator functionality with a test command
+      shell: >
+        docker exec scientific-calculator
+        python3 -c "from calculator import ScientificCalculator;
+        calc = ScientificCalculator();
+        result = calc.square_root(16);
+        print(f'Verification successful: sqrt(16) is {result}');
+        assert result == 4.0"
+      register: verification_result
+
+    - name: Print verification result
+      debug:
+        var: verification_result.stdout    
+
+    

@@ -30,4 +30,4 @@
         name: "{{ container_name }}"
         image: "{{ image }}"
         state: started
-        restart_policy: unless-stopped
+        detach: yes

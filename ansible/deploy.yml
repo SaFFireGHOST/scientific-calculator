@@ -31,4 +31,3 @@
         image: "{{ image }}"
         state: started
         restart_policy: unless-stopped
-        command: "python main.py --op sqrt --x 16"

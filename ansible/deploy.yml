@@ -17,6 +17,8 @@
         image: saffireghost/sci-calculator:latest
         state: started
         detach: yes
+        tty: yes
+        command: "sleep infinity"
 
 
     

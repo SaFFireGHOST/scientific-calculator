@@ -3,7 +3,7 @@
   tasks:
     - name: Pull the latest calculator image from Docker Hub
       docker_image:
-        name: saffireghost/sci_calculator:latest
+        name: saffireghost/sci-calculator:latest
         source: pull
 
     - name: Stop and remove the old calculator container if it exists
@@ -14,10 +14,10 @@
     - name: Run the new calculator container in detached mode
       docker_container:
         name: scientific-calculator
-        image: saffireghost/sci_calculator:latest
+        image: saffireghost/sci-calculator:latest
         state: started
         detach: yes
-        
+
     - name: Verify calculator functionality with a test command
       shell: >
         docker exec scientific-calculator

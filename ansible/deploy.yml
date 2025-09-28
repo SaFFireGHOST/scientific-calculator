@@ -1,24 +1,34 @@
-- hosts: localhost
-  connection: local
+- hosts: managed
+  become: yes
+  vars:
+    container_name: sci_calculator
   tasks:
-    - name: Pull the latest calculator image from Docker Hub
-      docker_image:
-        name: saffireghost/sci-calculator:latest
+    - name: Ensure python3-pip present (for docker SDK)
+      apt:
+        name: python3-pip
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Install docker python package
+      pip:
+        name: docker
+
+    - name: Pull the image from registry
+      community.docker.docker_image:
+        name: "{{ image }}"
         source: pull
 
-    - name: Stop and remove the old calculator container if it exists
-      docker_container:
-        name: scientific-calculator
+    - name: Stop and remove old container if exists
+      community.docker.docker_container:
+        name: "{{ container_name }}"
         state: absent
+        force_kill: yes
+        keep_volumes: no 
 
-    - name: Run the new calculator container in detached mode
-      docker_container:
-        name: scientific-calculator
-        image: saffireghost/sci-calculator:latest
+    - name: Run the calculator container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image }}"
         state: started
-        detach: yes
-        
-        
-
-
-    
+        restart_policy: unless-stopped
+        command: "python main.py --op sqrt --x 16"
